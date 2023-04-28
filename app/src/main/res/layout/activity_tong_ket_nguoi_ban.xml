@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TongKetNguoiBanAcitvity">
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:weightSum="3"
+        android:id="@+id/lnHeader"
+        android:layout_height="50dp">
+
+        <TextView
+            android:text="Soc"
+            android:id="@+id/tvNguoiBan"
+            android:textSize="20sp"
+            android:background="@drawable/rectangle_bg"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="50dp"/>
+
+        <TextView
+            android:text="10/4"
+            android:id="@+id/tvDate"
+            android:textSize="20sp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:clickable="true"
+            android:layout_height="50dp"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:text="Nhập"
+            android:id="@+id/btnInput"
+            android:textSize="20sp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="#f9d48a"
+            android:layout_height="50dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/lnHeader"
+        android:layout_width="match_parent"
+        android:id="@+id/lnVungMien"
+        android:layout_height="50dp">
+        <Button
+            android:text="MN"
+            android:backgroundTint="@color/black"
+            android:layout_width="80dp"
+            android:id="@+id/btnMienNam"
+            android:layout_height="50dp"/>
+        <Button
+            android:layout_marginLeft="20dp"
+            android:text="MB"
+            android:id="@+id/btnMienBac"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"
+            android:layout_width="80dp"
+            android:layout_height="50dp"/>
+    </LinearLayout>
+    <include
+        android:layout_below="@+id/lnVungMien"
+        android:layout_width="match_parent"
+        android:layout_height="285dp"
+        android:id="@+id/llTongKetNguoiBan"
+        layout="@layout/tong_ket_nguoi_ban_no_data"/>
+    <ScrollView
+        android:layout_below="@+id/llTongKetNguoiBan"
+        android:id="@+id/scrollView"
+        android:layout_marginBottom="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Add your views and widgets here within the RelativeLayout -->
+            <TextView
+                android:id="@+id/tvTrungThuong"
+                android:textSize="30sp"
+                android:text="@string/trung_thuong"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <include
+                android:layout_below="@+id/tvTrungThuong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/llTrungThuong"
+                layout="@layout/tong_ket_nguoi_ban_trung_thuong"/>
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/lnTongKetLoiLo"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:background="#f9de8a"
+        android:weightSum="4"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvLoiLoiTong"
+            android:layout_width="0dp"
+            android:layout_weight="1.7"
+            android:layout_height="match_parent"
+
+            android:gravity="center_vertical|center"
+            android:text="0"
+            android:textColor="@color/black"
+            android:textSize="@dimen/medium_size" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.1"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="-"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_large" />
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/tvLoiLoTrungThuong"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/black"
+            android:textSize="@dimen/medium_size" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="="
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_large" />
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/tvLoiLoKetQua"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/black"
+            android:textSize="@dimen/medium_size" />
+    </LinearLayout>
+
+</RelativeLayout>

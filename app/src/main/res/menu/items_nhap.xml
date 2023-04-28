@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_dau_duoi"
+        android:title="Đầu đuôi" />
+    <item
+        android:id="@+id/menu_da"
+        android:title="Đá" />
+
+    <item
+        android:id="@+id/menu_bao_lo"
+        android:title="Bao Lô" />
+</menu>

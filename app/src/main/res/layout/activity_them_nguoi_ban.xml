@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".ThemNguoiBanActivity">
+
+
+
+    <EditText
+        android:id="@+id/edit_ten_mn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tên"
+        android:inputType="text" />
+
+
+    <TextView
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="20dp"
+        android:text="Miền Nam"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/edit_text_he_so_dau_duoi_mn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Hệ số đầu đuôi"
+        android:inputType="numberDecimal" />
+    <EditText
+        android:id="@+id/edit_text_he_so_dau_da_mn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Hệ số đâ"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/edit_text_he_so_dau_bao_lo_mn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Hệ số bao lô"
+        android:inputType="numberDecimal" />
+
+
+
+</LinearLayout>

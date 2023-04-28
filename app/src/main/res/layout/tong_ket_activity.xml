@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:weightSum="3"
+        android:id="@+id/lnHeader"
+        android:layout_height="50dp">
+
+        <TextView
+            android:text="Soc"
+            android:id="@+id/tvNguoiBan"
+            android:textSize="20sp"
+            android:background="@drawable/rectangle_bg"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="50dp"/>
+
+        <TextView
+            android:text="10/4"
+            android:id="@+id/tvDate"
+            android:textSize="20sp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="50dp"/>
+        <Button
+            android:text="Nhập"
+            android:id="@+id/btnInput"
+            android:textSize="20sp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="#f9d48a"
+            android:layout_height="50dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/lnHeader"
+        android:layout_width="match_parent"
+        android:id="@+id/lnVungMien"
+        android:layout_height="50dp">
+        <Button
+            android:text="MN"
+            android:backgroundTint="@color/black"
+            android:layout_width="80dp"
+            android:id="@+id/btnMienNam"
+            android:layout_height="50dp"/>
+        <Button
+            android:layout_marginLeft="20dp"
+            android:text="MB"
+            android:id="@+id/btnMienBac"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"
+            android:layout_width="80dp"
+            android:layout_height="50dp"/>
+    </LinearLayout>
+
+
+
+    <View
+        android:layout_marginTop="10dp"
+        android:background="#000"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"/>
+
+
+
+</RelativeLayout>

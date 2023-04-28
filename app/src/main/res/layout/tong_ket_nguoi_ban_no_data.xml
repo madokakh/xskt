@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_height="200dp">
+
+    <LinearLayout
+        android:id="@+id/llNoData"
+        android:gravity="center"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_gravity="center|center_vertical"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/medium_size"
+            android:gravity="center"
+            android:text="Hiện chưa có dữ liệu"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:weightSum="3"
+        android:id="@+id/lnKqTong"
+        android:visibility="invisible"
+        android:layout_height="210dp">
+
+        <LinearLayout
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/lnDauDuoi"
+            android:layout_height="0dp">
+
+            <TextView
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:text="ĐĐ"
+                android:gravity="center"
+                android:textSize="@dimen/medium_size"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"/>
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:text="0"
+                android:gravity="center"
+                android:textSize="@dimen/medium_size"
+                android:id="@+id/tvTongDD"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"/>
+
+            <TextView
+                android:layout_marginLeft="40dp"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:text="0"
+                android:gravity="center"
+                android:textSize="@dimen/medium_size"
+                android:id="@+id/tvTongThuDD"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/lnSoDa"
+            android:layout_height="0dp">
+
+            <TextView
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:text="Đá"
+                android:gravity="center"
+                android:textSize="@dimen/medium_size"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"/>
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:text="0"
+                android:gravity="center"
+                android:textSize="30sp"
+                android:id="@+id/tvTongDa"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"/>
+
+            <TextView
+                android:layout_marginLeft="40dp"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:text="0"
+                android:gravity="center"
+                android:textSize="@dimen/medium_size"
+                android:id="@+id/tvTongThuDa"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/lnBaoLo"
+            android:layout_height="0dp">
+
+            <TextView
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:text="Lô"
+                android:gravity="center"
+                android:textSize="@dimen/medium_size"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"/>
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:text="0"
+                android:gravity="center"
+                android:textSize="@dimen/medium_size"
+                android:id="@+id/tvTongLo"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"/>
+
+            <TextView
+                android:layout_marginLeft="40dp"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:text="0"
+                android:gravity="center"
+                android:textSize="@dimen/medium_size"
+                android:id="@+id/tvTongThuLo"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <View
+        android:background="#000"
+        android:layout_below="@id/lnKqTong"
+        android:layout_width="match_parent"
+        android:id="@+id/vLine1"
+        android:visibility="visible"
+        android:layout_height="2dp"/>
+    <TextView
+        android:layout_below="@+id/vLine1"
+        android:id="@+id/tvTongThu"
+        android:text="3634"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:layout_marginRight="5dp"
+        android:visibility="invisible"
+        android:layout_width="100dp"
+        android:background="#f9d48a"
+        android:layout_height="70dp"/>
+
+</RelativeLayout>

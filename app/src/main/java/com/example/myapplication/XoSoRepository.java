@@ -73,9 +73,15 @@ public class XoSoRepository {
     public LiveData<List<DauDuoi>> getAllDauDuois() {
         return allDauDuois;
     }
+    public LiveData<List<DauDuoi>> getAllDauDuoisWithNguoiBan(String nguoiBanID) {
+        return dauDuoiDao.getAllDauDuoisWithNguoiBan(nguoiBanID);
+    }
 
     public LiveData<List<BaoLo>> getAllBaoLos() {
         return allBaoLos;
+    }
+    public LiveData<List<BaoLo>> getAllBaoLosWithNguoiBan(String nguoiBanID){
+        return baoLoDao.getAllBaoLoWithNguoiBan(nguoiBanID);
     }
 
    public void insertDai(Dai dai){
@@ -142,6 +148,9 @@ public class XoSoRepository {
             soDaDao.update(soDa);
         });
     }
+    public LiveData<List<SoDa>> getAllSoDasWithNguoiBan(String nguoiBanID) {
+        return soDaDao.getAllSoDasWithNguoiBan(nguoiBanID);
+    }
     void deleteDa(SoDa soDa){
         XoSoDataBase.databaseWriteExecutor.execute(() -> {
             soDaDao.delete(soDa);
@@ -179,6 +188,7 @@ public class XoSoRepository {
 
         return baoLoDao.getAllBaoLoWithNguoiBanAndDate(nguoiBanID,date);
     }
+
 
     void insertNguoiBan(NguoiBan nguoiBan){
         XoSoDataBase.databaseWriteExecutor.execute(() -> {

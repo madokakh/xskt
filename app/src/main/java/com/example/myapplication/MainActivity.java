@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }*/
         //XoSoUtils.loadKetQuaXoSoFromInternet()
-        CurrentDate currentDate = new CurrentDate();
+       /* CurrentDate currentDate = new CurrentDate();
         city = XoSoUtils.getLotteryCityByDate(currentDate.getNgay(),currentDate.getThang(),currentDate.getNam());
        //   CurrentDate currentDate = new CurrentDate();
         if(currentDate.getGio() >= 16){
@@ -85,11 +85,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }else if(currentDate.getPhut() > 50){
                 saveGiaiThuongToDatabase();
             }
-        }
-   //     daiViewModel.deleteAllDai();
+        }*/
+   //    daiViewModel.deleteAllDai();
+     //   loadKetQuaTrungThuong();
+      //  testLoadKetQuaTrungThuong();
 
 
 
+
+
+    }
+
+    private void testLoadKetQuaTrungThuong() {
+
+          CurrentDate currentDate = new CurrentDate();
+          int day = 28;
+          int month = 3;
+          int year = 2023;
+        city = XoSoUtils.getLotteryCityByDate(day,month,year);
+       //   CurrentDate currentDate = new CurrentDate();
+       /* if(currentDate.getGio() >= 16){
+            if(currentDate.getGio() > 16){
+                saveGiaiThuongToDatabase();
+            }else if(currentDate.getPhut() > 50){
+                saveGiaiThuongToDatabase();
+            }
+        }*/
+        saveGiaiThuongToDatabase();
     }
 
 

@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import static android.provider.MediaStore.EXTRA_FULL_SCREEN;
 import static com.example.myapplication.NguoiBanActivity.EXTRA_NGUOI_BAN;
+import static com.example.myapplication.NhapDDActivity.EXTRA_VUNG_MIEN;
 import static com.example.myapplication.TongKetNguoiBanAcitvity.EXTRA_DATE;
 
 import androidx.annotation.Nullable;
@@ -72,6 +73,7 @@ public class NhapSoDaActitivy extends AppCompatActivity implements View.OnClickL
             R.id.btnZero,R.id.btnDot, R.id.btnEnter, R.id.btnOk
     };
     private String sDate;
+    private int vungMien = AppConstants.MIEN_NAM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,7 @@ public class NhapSoDaActitivy extends AppCompatActivity implements View.OnClickL
         nguoiBan  = (NguoiBan) intent.getSerializableExtra(EXTRA_NGUOI_BAN);
         isFullScreen = intent.getBooleanExtra(EXTRA_FULL_SCREEN,isFullScreen);
         sDate = intent.getStringExtra(EXTRA_DATE);
+        vungMien = intent.getIntExtra(EXTRA_VUNG_MIEN,0);
         connectView();
 
         connectData();
@@ -388,6 +391,8 @@ public class NhapSoDaActitivy extends AppCompatActivity implements View.OnClickL
 
     private void addSoDaToList() {
         SoDa soDa = new SoDa();
+
+        soDa.setVungMien(vungMien);
         soDa.setSoCuocThu1(Integer.parseInt(etSo1.getText().toString()));
         soDa.setSoCuocThu2(Integer.parseInt(etSo2.getText().toString()));
 

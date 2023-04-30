@@ -38,11 +38,15 @@ public class BaoLoViewModel extends AndroidViewModel {
     public void deleteAllBaoLo() {
         repository.deleteAllBaoLo();
     }
-    public LiveData<List<BaoLo>> getAllDauDuois() {
+    public LiveData<List<BaoLo>> getAllBaoLos() {
         return allBaoLos;
     }
     public LiveData<List<BaoLo>> getAllBaoLoWithNguoiBanIDAndDate(String nguoiBanID, String date) {
         return repository.getAllBaoLoWithNguoiBanIDAndDate(nguoiBanID, date);
+    }
+
+    public LiveData<List<BaoLo>> getAllBaoLoWithNguoiBan(String nguoiBanID) {
+        return repository.getAllBaoLosWithNguoiBan(nguoiBanID);
     }
 
 }

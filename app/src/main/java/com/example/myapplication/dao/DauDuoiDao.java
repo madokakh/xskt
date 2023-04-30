@@ -33,4 +33,5 @@ public interface DauDuoiDao {
 
     @Query("SELECT * FROM dauduoi WHERE nguoiBanID= :nguoiBanID AND dateString= :date")
     LiveData<List<DauDuoi>> getAllDauDuoisWithNguoiBanAndDate(String nguoiBanID, String date);
+
 }

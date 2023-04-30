@@ -26,6 +26,8 @@ public class SoDa {
     private String tenDai1;
     private String tenDai2;
 
+    private int vungMien;
+
     public SoDa(int soDaID, String nguoiBanID, int soCuocThu1, int soCuocThu2, int soCuocThu3, int dai1, int dai2, int dai3, int dai4, String date) {
         this.soDaID = soDaID;
         this.nguoiBanID = nguoiBanID;
@@ -146,5 +148,14 @@ public class SoDa {
 
     public void setTenDai2(String tenDai2) {
         this.tenDai2 = tenDai2;
+    }
+
+
+    public int getVungMien() {
+        return vungMien;
+    }
+
+    public void setVungMien(int vungMien) {
+        this.vungMien = vungMien;
     }
 }

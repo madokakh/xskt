@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/llNoData"
         android:gravity="center"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -27,7 +27,7 @@
         android:orientation="vertical"
         android:weightSum="3"
         android:id="@+id/lnKqTong"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:layout_height="210dp">
 
         <LinearLayout
@@ -89,7 +89,7 @@
                 android:textColor="@color/black"
                 android:text="0"
                 android:gravity="center"
-                android:textSize="30sp"
+                android:textSize="@dimen/medium_size"
                 android:id="@+id/tvTongDa"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"/>
@@ -155,13 +155,13 @@
     <TextView
         android:layout_below="@+id/vLine1"
         android:id="@+id/tvTongThu"
-        android:text="3634"
-        android:textSize="30sp"
+        android:text=""
+        android:textSize="@dimen/medium_size"
         android:textColor="@color/black"
         android:layout_alignParentRight="true"
         android:gravity="center"
         android:layout_marginRight="5dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:layout_width="100dp"
         android:background="#f9d48a"
         android:layout_height="70dp"/>

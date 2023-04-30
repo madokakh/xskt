@@ -51,6 +51,7 @@ import java.util.List;
 
 public class NhapDDActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, DauDuoiAdapter.OnItemClickListener, DauDuoiAdapter.OnItemLongClickListener {
 
+    public static final String EXTRA_VUNG_MIEN = "com.example.myapplication.EXTRA_VUNG_MIEN";
     EditText etTienSoDau;
     EditText etTienSoDuoi;
     EditText etSoCuoc;
@@ -97,6 +98,8 @@ public class NhapDDActivity extends AppCompatActivity implements View.OnClickLis
 
      TextView tvNguoiBan;
      boolean isFullScreen = false;
+
+     private int vungMien;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +109,8 @@ public class NhapDDActivity extends AppCompatActivity implements View.OnClickLis
         nguoiBan  = (NguoiBan) intent.getSerializableExtra(EXTRA_NGUOI_BAN);
         isFullScreen = intent.getBooleanExtra(EXTRA_FULL_SCREEN,isFullScreen);
         sDate = intent.getStringExtra(EXTRA_DATE);
+        vungMien = intent.getIntExtra(EXTRA_VUNG_MIEN,0);
+
 
         dauDuoiList = new ArrayList<>();
         dauDuoiList2 = new ArrayList<>();
@@ -475,6 +480,7 @@ public class NhapDDActivity extends AppCompatActivity implements View.OnClickLis
         dauDuoi.setDateString(tvDate.getText().toString());
 
         dauDuoi.setDate(date);
+        dauDuoi.setVungMien(vungMien);
 
         dauDuoi.setTenDai1(tvTenDai1.getText().toString());
         dauDuoi.setTenDai2(tvTenDai2.getText().toString());
@@ -498,8 +504,11 @@ public class NhapDDActivity extends AppCompatActivity implements View.OnClickLis
         dateSelected += "/" + calendar.get(Calendar.YEAR);
         dayOfWeek = XoSoUtils.getDateOfWeek(dateSelected);
 
+      //  LotteryCity city = XoSoUtils.getLotteryCityByDate();
+
         if(cbDai1.isChecked()){
             dauDuoi.setDaiI1D(XoSoUtils.getDais(dayOfWeek).getCity1ID());
+          //  dauDuoi.setTenDai1();
         }
         if(cbDai2.isChecked()){
             dauDuoi.setDaiI2D(XoSoUtils.getDais(dayOfWeek).getCity2ID());

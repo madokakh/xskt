@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:visibility="visible"
+        android:visibility="invisible"
         android:id="@+id/linear_no_trung_thuong_data"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

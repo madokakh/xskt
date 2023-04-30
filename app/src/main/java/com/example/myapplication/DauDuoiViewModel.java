@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.myapplication.database.DauDuoiRepository;
 import com.example.myapplication.database.XoSoDataBase;
+import com.example.myapplication.model.BaoLo;
 import com.example.myapplication.model.DauDuoi;
 
 import java.util.Date;
@@ -56,5 +57,9 @@ public class DauDuoiViewModel extends AndroidViewModel {
 
 
         return repository.getAllDauDuoiWithNguoiBanIDAndDate(nguoiBanID,date);
+    }
+
+    public LiveData<List<DauDuoi>> getAllDauDuoisWithNguoiBan(String nguoiBanID) {
+        return repository.getAllDauDuoisWithNguoiBan(nguoiBanID);
     }
 }

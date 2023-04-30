@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.DatePicker;
 
 import com.example.myapplication.AppConstants;
+import com.example.myapplication.CurrentDate;
 import com.example.myapplication.LotteryCity;
 import com.example.myapplication.LotterySchedule;
 import com.example.myapplication.PareseURLWebScrapping;
@@ -565,6 +566,26 @@ public class XoSoUtils {
     public static PareseURLWebScrapping loadKetQuaXoSoFromInternet(String maDaiEndPoint) {
 
         String url = AppConstants.URL_BASE_MIEN_NAM + maDaiEndPoint + ".html";
+        return (PareseURLWebScrapping) new PareseURLWebScrapping().execute(new String[]{url});
+    }
+
+    public static PareseURLWebScrapping loadKetQuaXoSoFromInternet(String date,int dai) {
+
+        String url = null;
+
+        String dates[] = date.split("/");
+
+        int day = Integer.parseInt(dates[0]);
+        int month = Integer.parseInt(dates[1]);
+        CurrentDate currentDate = new CurrentDate();
+        LotteryCity city = getLotteryCityByDate(day,(month-1),currentDate.getNam());
+        if(dai == 1){
+            url = AppConstants.URL_BASE_MIEN_NAM + city.getCity1() + ".html";
+        }else{
+
+            url = AppConstants.URL_BASE_MIEN_NAM + city.getCity2() + ".html";
+        }
+
         return (PareseURLWebScrapping) new PareseURLWebScrapping().execute(new String[]{url});
     }
 

@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import static android.provider.MediaStore.EXTRA_FULL_SCREEN;
 import static com.example.myapplication.NguoiBanActivity.EXTRA_NGUOI_BAN;
+import static com.example.myapplication.NhapDDActivity.EXTRA_VUNG_MIEN;
 import static com.example.myapplication.TongKetNguoiBanAcitvity.EXTRA_DATE;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -69,6 +70,7 @@ public class NhapBaoLoActivity extends AppCompatActivity implements View.OnClick
     private boolean isFullScreen;
     private String sDate;
 
+    private int vungMien = AppConstants.MIEN_NAM;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +80,7 @@ public class NhapBaoLoActivity extends AppCompatActivity implements View.OnClick
         nguoiBan  = (NguoiBan) intent.getSerializableExtra(EXTRA_NGUOI_BAN);
         isFullScreen = intent.getBooleanExtra(EXTRA_FULL_SCREEN,isFullScreen);
         sDate = intent.getStringExtra(EXTRA_DATE);
+        vungMien = intent.getIntExtra(EXTRA_VUNG_MIEN,0);
         connectView();
 
         connectData();
@@ -403,6 +406,7 @@ public class NhapBaoLoActivity extends AppCompatActivity implements View.OnClick
 
         BaoLo baoLo = new BaoLo();
 
+        baoLo.setVungMien(vungMien);
         baoLo.setSoCuoc(etSo1.getText().toString());
         baoLo.setTienCuoc(etTienCuoc.getText().toString());
         baoLo.setNguoiBanID(nguoiBan.getNguoiBanID());

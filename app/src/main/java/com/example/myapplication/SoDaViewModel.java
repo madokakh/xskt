@@ -46,4 +46,8 @@ public class SoDaViewModel extends AndroidViewModel {
 
         return repository.getAllSoDaWithNguoiBanIDAndDate(nguoiBanID,date);
     }
+
+    public LiveData<List<SoDa>> getAllSoDasWithNguoiBan(String nguoiBanID) {
+        return repository.getAllSoDasWithNguoiBan(nguoiBanID);
+    }
 }

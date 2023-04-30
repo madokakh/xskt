@@ -31,4 +31,7 @@ public interface BaoLoDao {
     LiveData<List<BaoLo>> getAllBaoLos();
     @Query("SELECT * FROM baolo WHERE nguoiBanID= :nguoiBanID AND date= :date")
     LiveData<List<BaoLo>> getAllBaoLoWithNguoiBanAndDate(String nguoiBanID, String date);
+
+    @Query("SELECT * FROM baolo WHERE nguoiBanID= :nguoiBanID")
+    LiveData<List<BaoLo>> getAllBaoLoWithNguoiBan(String nguoiBanID);
 }

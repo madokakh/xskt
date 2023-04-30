@@ -26,7 +26,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Dai.class,DauDuoi.class, SoDa.class, NguoiBan.class, BaoLo.class},version = 1)
+@Database(entities = {Dai.class,DauDuoi.class, SoDa.class, NguoiBan.class, BaoLo.class},version = 2)
 @TypeConverters ({GiaiThuongTypeConverter.class,DateConverter.class})
 public  abstract class XoSoDataBase extends RoomDatabase {
 

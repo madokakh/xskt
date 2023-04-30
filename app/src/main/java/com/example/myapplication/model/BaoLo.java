@@ -24,6 +24,7 @@ public class BaoLo {
     private String tenDai2;
 
     private String date;
+    private int vungMien;
 
     public BaoLo(int baoLoID, String nguoiBanID, String soCuoc, int dai1, int dai2, int dai3, int dai4) {
         this.baoLoID = baoLoID;
@@ -124,5 +125,13 @@ public class BaoLo {
 
     public void setTenDai2(String tenDai2) {
         this.tenDai2 = tenDai2;
+    }
+
+    public int getVungMien() {
+        return vungMien;
+    }
+
+    public void setVungMien(int vungMien) {
+        this.vungMien = vungMien;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import static com.example.myapplication.NhapDDActivity.EXTRA_VUNG_MIEN;
 import static com.example.myapplication.ThemNguoiBanActivity.EXTRA_TEN_NGUOI_BAN;
 
 import androidx.activity.result.ActivityResult;
@@ -94,9 +95,11 @@ public class NguoiBanActivity extends AppCompatActivity implements NguoiBanAdapt
 
     @Override
     public void onItemClick(NguoiBan nguoiBan) {
-        Intent intent = new Intent(NguoiBanActivity.this,TongKetNguoiBanAcitvity.class);
+       // Intent intent = new Intent(NguoiBanActivity.this,TongKetNguoiBanAcitvity.class);
+        Intent intent = new Intent(NguoiBanActivity.this,TongKetActivity.class);
        // intent.putExtra(EXTRA_TEN_NGUOI_BAN,nguoiBan.getTenNguoiBan());
         intent.putExtra(EXTRA_NGUOI_BAN,nguoiBan);
+        intent.putExtra(EXTRA_VUNG_MIEN,AppConstants.MIEN_NAM);
         startActivity(intent);
 
 

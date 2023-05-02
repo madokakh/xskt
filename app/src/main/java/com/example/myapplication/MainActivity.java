@@ -25,8 +25,11 @@ import com.example.myapplication.model.GiaiThuong;
 import com.example.myapplication.model.NguoiBan;
 import com.example.myapplication.utils.XoSoUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, PareseURLWebScrapping.LayKetQuaCallBack {
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int dem = 0;
     PareseURLWebScrapping layKetQua;
     private  String URL_MIEN_NAM = "https://www.minhngoc.com.vn/xo-so-mien-nam/";
+    private  String URL_MIEN_BAC = "https://www.minhngoc.com.vn/ket-qua-xo-so/mien-bac.html";
     WebView wvKetQuaXoSo;
     Button btnXS;
 
@@ -42,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     NguoiBanRepository nguoiBanrepository;
 
     DauDuoiViewModel dauDuoiViewModel;
+    SoDaViewModel soDaViewModel;
+    BaoLoViewModel baoLoViewModel;
     DaiViewModel daiViewModel;
 
     GiaiThuong giaiThuong;
@@ -55,6 +61,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnXS = findViewById(R.id.btnXS);
 
         daiViewModel = new ViewModelProvider(this).get(DaiViewModel.class);
+
+        dauDuoiViewModel = new ViewModelProvider(this).get(DauDuoiViewModel.class);
+        soDaViewModel = new ViewModelProvider(this).get(SoDaViewModel.class);
+        baoLoViewModel = new ViewModelProvider(this).get(BaoLoViewModel.class);
         btnXS.setOnClickListener(this);
         wvKetQuaXoSo.loadUrl("https://xosodaiphat.com/");
 
@@ -86,13 +96,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 saveGiaiThuongToDatabase();
             }
         }*/
-   //    daiViewModel.deleteAllDai();
+       daiViewModel.deleteAllDai();
      //   loadKetQuaTrungThuong();
       //  testLoadKetQuaTrungThuong();
 
 
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, -6);
+        Date sixDaysAgo = calendar.getTime();
+        String sixDaysAgoString = new SimpleDateFormat("dd/MM", Locale.getDefault()).format(sixDaysAgo);
+        int day = Integer.parseInt(sixDaysAgoString.split("/")[0]);
+        int month = Integer.parseInt(sixDaysAgoString.split("/")[1]);
+        sixDaysAgoString = day + "/" + month;
+        Log.d("Day6Daysago",  sixDaysAgoString+ "");
 
-
+        dauDuoiViewModel.deleteAllDauDuoiSixDaysAgo(sixDaysAgoString);
+        soDaViewModel.deleteAllSoDasSixDaysAgo(sixDaysAgoString);
+        baoLoViewModel.deleteAllBaoLoSixDaysAgo(sixDaysAgoString);
 
     }
 

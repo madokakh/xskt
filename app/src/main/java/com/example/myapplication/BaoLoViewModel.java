@@ -45,8 +45,18 @@ public class BaoLoViewModel extends AndroidViewModel {
         return repository.getAllBaoLoWithNguoiBanIDAndDate(nguoiBanID, date);
     }
 
+    public LiveData<List<BaoLo>> getAllBaoLoWithNguoiBanIDAndDateVungMien(String nguoiBanID, String date,int vungMien) {
+        return repository.getAllBaoLoWithNguoiBanIDAndDateVungMien(nguoiBanID, date, vungMien);
+    }
+
     public LiveData<List<BaoLo>> getAllBaoLoWithNguoiBan(String nguoiBanID) {
         return repository.getAllBaoLosWithNguoiBan(nguoiBanID);
+    }
+
+
+    public void deleteAllBaoLoSixDaysAgo(String date){
+
+        repository.deleteAllBaoLoSixDaysAgo(date);
     }
 
 }

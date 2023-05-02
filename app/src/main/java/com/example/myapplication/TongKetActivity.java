@@ -6,10 +6,12 @@ import static com.example.myapplication.NhapDDActivity.EXTRA_VUNG_MIEN;
 import static com.example.myapplication.TongKetNguoiBanAcitvity.EXTRA_DATE;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class TongKetActivity extends AppCompatActivity implements View.OnClickListener {
+public class TongKetActivity extends AppCompatActivity implements View.OnClickListener, PareseURLWebScrappingMienBac.LayKetQuaCallBack {
 
 
     //View Models
@@ -80,6 +82,9 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
     private LinearLayout ln_data_an_ui;
     private LinearLayout ln_data_da;
     private LinearLayout ln_data_bao_lo;
+    private LinearLayout lnDauDuoi;
+    private LinearLayout lnSoDa;
+    private LinearLayout lnBaoLo;
 
     private boolean isFulScreen;
     private float tongAnUi = 0;
@@ -90,6 +95,11 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
     private float tongTrungDauDuoi = 0;
     private float tongTrungThuongSoDa = 0;
     private float tongTrungThuongBaoLo = 0;
+
+    private float tongTrungDauDuoiMienBac = 0;
+    private float tongTrungSoDaMienBac = 0;
+    private float tongTrungBaoLoMienBac = 0;
+    List<GiaiThuongMienBac> giaiThuongMienBacList;
 
 
     @Override
@@ -110,6 +120,11 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
     private void action() {
         btnNhap.setOnClickListener(this);
         tvDate.setOnClickListener(this);
+        btnMienNam.setOnClickListener(this);
+        btnMienBac.setOnClickListener(this);
+        lnDauDuoi.setOnClickListener(this);
+        lnSoDa.setOnClickListener(this);
+        lnBaoLo.setOnClickListener(this);
     }
 
     private void connectViewIDs() {
@@ -132,6 +147,9 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
         tvLoiLoKetQua = findViewById(R.id.tvLoiLoKetQua);
         btnMienNam = findViewById(R.id.btnMienNam);
         btnMienBac = findViewById(R.id.btnMienBac);
+        lnDauDuoi = findViewById(R.id.lnDauDuoi);
+        lnSoDa = findViewById(R.id.lnSoDa);
+        lnBaoLo = findViewById(R.id.lnBaoLo);
     }
 
     private void initialize() {
@@ -148,6 +166,7 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
         listSodasByDate = new ArrayList<>();
         listBaoLosByDate = new ArrayList<>();
 
+        giaiThuongMienBacList = new ArrayList<>();
 
         tvNguoiBan.setText(nguoiBan.getTenNguoiBan());
 
@@ -216,7 +235,7 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
     }
-    private void loadDai2byDate(LotteryCity city) {
+    private void  loadDai2byDate(LotteryCity city) {
 
         XoSoUtils.loadKetQuaXoSoFromInternet(tvDate.getText().toString(),2).setListener(new PareseURLWebScrapping.LayKetQuaCallBack() {
             @Override
@@ -254,6 +273,19 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
         // IF Dau Duoi Mien Bac
         else{
             //Handle mien bac
+
+            for(BaoLo baoLo : listBaoLos){
+                if(baoLo.getVungMien() == AppConstants.MIEN_BAC &&
+                        baoLo.getDate().equals(date)){
+                    listBaoLosByDate.add(baoLo);
+                }
+            }
+
+            totalBaoLo = XoSoUtils.tongBaoLoMienBac(listBaoLosByDate);
+
+           // float ketQua = totalBaoLo * nguoiBan.getHeSoBaoLo();
+            tvTongThuLo.setText(XoSoUtils.getInteger(totalBaoLo));
+           //  tvTongLo.setText(XoSoUtils.getInteger(totalBaoLo));
         }
 
         updateTotal();
@@ -283,6 +315,18 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
         // IF soDa Mien Bac
         else{
             //Handle mien bac
+            for(SoDa soDa : listSodas){
+                if(soDa.getVungMien() == AppConstants.MIEN_BAC &&
+                        soDa.getDate().equals(date)){
+                    listSodasByDate.add(soDa);
+                }
+            }
+
+            totalSoDa = XoSoUtils.tongSoDaMienBac(listSodasByDate);
+
+            float tongThuSoDa = totalSoDa*AppConstants.HE_SO_DA_MIEN_BAC;
+            tvTongThuDa.setText(XoSoUtils.getInteger(tongThuSoDa));
+            tvTongDa.setText(XoSoUtils.getInteger(totalSoDa));
         }
         updateTotal();
     }
@@ -311,6 +355,18 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
         // IF Dau Duoi Mien Bac
         else{
             //Handle mien bac
+            for(DauDuoi dd : listDauDuois){
+                if(dd.getVungMien() == AppConstants.MIEN_BAC &&
+                        dd.getDateString().equals(date)){
+                    listDauDuoisByDate.add(dd);
+                }
+            }
+
+            totalDauDuoi = XoSoUtils.tongDauDuoiMienBac(listDauDuoisByDate);
+
+            int tongThuDauDuoi = (int) ((totalDauDuoi*90)/100);
+            tvTongDD.setText(XoSoUtils.getInteger(totalDauDuoi));
+            tvTongThuDD.setText(tongThuDauDuoi+"");
         }
 
 
@@ -427,9 +483,75 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
                     updateUIBaoLo(tvDate.getText().toString());
 
                 }
-            }, year, month, day);
+            }, year, month - 1, day);
             XoSoUtils.limited7DaysSelectedDatePicker(datePickerDialog);
             datePickerDialog.show();
+        }
+
+        if(v.getId() == R.id.btnMienNam){
+            if(vungMien != AppConstants.MIEN_NAM){
+                vungMien = AppConstants.MIEN_NAM;
+
+                // Create a ColorStateList that defines the background tint colors
+                ColorStateList colorStateListBlack = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black));
+                ColorStateList colorStateListWhite = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white));
+
+// Set the background tint of the button using the ColorStateList
+                btnMienNam.setBackgroundTintList(colorStateListBlack);
+
+                btnMienBac.setBackgroundTintList(colorStateListWhite);
+                btnMienNam.setTextColor(ContextCompat.getColor(this, R.color.white));
+                btnMienBac.setTextColor(ContextCompat.getColor(this, R.color.black));
+
+                resetUIList();
+                removeDataTrungThuongView();
+                updateUIDauDuoi(tvDate.getText().toString());
+                updateUISoDa(tvDate.getText().toString());
+                updateUIBaoLo(tvDate.getText().toString());
+
+
+            }
+        }
+        if(v.getId() == R.id.btnMienBac){
+            if(vungMien != AppConstants.MIEN_BAC){
+                vungMien = AppConstants.MIEN_BAC;
+                // Create a ColorStateList that defines the background tint colors
+                ColorStateList colorStateListBlack = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black));
+                ColorStateList colorStateListWhite = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white));
+
+
+// Set the background tint of the button using the ColorStateList
+                btnMienBac.setBackgroundTintList(colorStateListBlack);
+
+                btnMienNam.setBackgroundTintList(colorStateListWhite);
+                btnMienBac.setTextColor(ContextCompat.getColor(this, R.color.white));
+                btnMienNam.setTextColor(ContextCompat.getColor(this, R.color.black));
+
+
+                resetUIList();
+                removeDataTrungThuongView();
+                updateUIDauDuoi(tvDate.getText().toString());
+                updateUISoDa(tvDate.getText().toString());
+                updateUIBaoLo(tvDate.getText().toString());
+            }
+        }
+
+        if (v.getId() == R.id.lnDauDuoi) {
+
+            if(vungMien == AppConstants.MIEN_NAM){
+                goToNhapDDActivity(true);
+            }else{
+                goToNhapDDMienBacAcitivity(false);
+            }
+
+        }
+        if (v.getId() == R.id.lnSoDa) {
+            goToNhapSoDaActivity(true);
+
+        }
+        if (v.getId() == R.id.lnBaoLo) {
+            gotoBaoLoActivity(true);
+
         }
     }
 
@@ -439,7 +561,12 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
         popupMenu.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
             if (id == R.id.menu_dau_duoi) {
-                goToNhapDDActivity(false);
+                if(vungMien == AppConstants.MIEN_NAM){
+                    goToNhapDDActivity(false);
+                }else{
+                    goToNhapDDMienBacAcitivity(false);
+                }
+
 
                 return true;
             } else if (id == R.id.menu_da) {
@@ -455,11 +582,22 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
         popupMenu.show();
     }
 
+    private void goToNhapDDMienBacAcitivity(boolean b) {
+        Intent intent = new Intent(TongKetActivity.this, NhapDDMienBac.class);
+        intent.putExtra(EXTRA_NGUOI_BAN, nguoiBan);
+        intent.putExtra(EXTRA_DATE, tvDate.getText().toString());
+        intent.putExtra(EXTRA_VUNG_MIEN, vungMien);
+        if (isFulScreen) {
+            intent.putExtra(EXTRA_FULL_SCREEN, isFulScreen);
+        }
+        startActivity(intent);
+    }
+
     private void gotoBaoLoActivity(boolean b) {
         Intent intent = new Intent(TongKetActivity.this, NhapBaoLoActivity.class);
         intent.putExtra(EXTRA_NGUOI_BAN, nguoiBan);
         intent.putExtra(EXTRA_DATE, tvDate.getText().toString());
-        intent.putExtra(EXTRA_VUNG_MIEN, AppConstants.MIEN_NAM);
+        intent.putExtra(EXTRA_VUNG_MIEN, vungMien);
         if (isFulScreen) {
             intent.putExtra(EXTRA_FULL_SCREEN, isFulScreen);
         }
@@ -472,7 +610,7 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent = new Intent(TongKetActivity.this, NhapSoDaActitivy.class);
         intent.putExtra(EXTRA_NGUOI_BAN, nguoiBan);
         intent.putExtra(EXTRA_DATE, tvDate.getText().toString());
-        intent.putExtra(EXTRA_VUNG_MIEN, AppConstants.MIEN_NAM);
+        intent.putExtra(EXTRA_VUNG_MIEN, vungMien);
         if (isFulScreen) {
             intent.putExtra(EXTRA_FULL_SCREEN, isFulScreen);
         }
@@ -483,7 +621,7 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent = new Intent(TongKetActivity.this, NhapDDActivity.class);
         intent.putExtra(EXTRA_NGUOI_BAN, nguoiBan);
         intent.putExtra(EXTRA_DATE, tvDate.getText().toString());
-        intent.putExtra(EXTRA_VUNG_MIEN, AppConstants.MIEN_NAM);
+        intent.putExtra(EXTRA_VUNG_MIEN, vungMien);
         if (isFulScreen) {
             intent.putExtra(EXTRA_FULL_SCREEN, isFulScreen);
         }
@@ -496,8 +634,9 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
             daiViewModel.getDaisByDate(tvDate.getText().toString()).observe(this,
                     dais -> {
                         ln_data_an_ui.removeAllViews();
+                        tongTrungThuongAnUi = 0;
                         if(dais.size() > 0){
-                            tongTrungThuongAnUi = 0;
+
                             for (DauDuoi dauDuoi : listDauDuoisByDate) {
                                 tongTrungThuongAnUi += addAnUiItem(dauDuoi,dais);
                             }
@@ -518,9 +657,15 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
                         ln_data_dau_duoi.removeAllViews();
                         if (dais != null) {
                             tongTrungDauDuoi = 0;
-                            for (DauDuoi dauDuoi : listDauDuoisByDate) {
-                                addTrungDauDuoiItem(dauDuoi,dais);
+                            if(vungMien == AppConstants.MIEN_NAM){
+                                for (DauDuoi dauDuoi : listDauDuoisByDate) {
+                                    addTrungDauDuoiItem(dauDuoi,dais);
+                                }
+                            }else{
+                                //Handle trung thuong mien bac here
+                                XoSoUtils.loadKetQuaXoSoFromInternetMienBac(tvDate.getText().toString()).setListener(TongKetActivity.this);
                             }
+
                         }
                     });
 
@@ -534,9 +679,15 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
                 dais -> {
                     ln_data_da.removeAllViews();
                     tongTrungThuongSoDa = 0;
-                    for (SoDa soDa : listSodasByDate) {
-                        addTrungSoDa2Item(soDa,dais);
+                    if(vungMien == AppConstants.MIEN_NAM){
+                        for (SoDa soDa : listSodasByDate) {
+                            addTrungSoDa2Item(soDa,dais);
+                        }
+                    }else{
+                        //handle Trung Mien Bac
+                        XoSoUtils.loadKetQuaXoSoFromInternetMienBac(tvDate.getText().toString()).setListener(TongKetActivity.this);
                     }
+
                 });
     }
 
@@ -547,22 +698,20 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
 
                     ln_data_bao_lo.removeAllViews();
                     tongTrungThuongBaoLo = 0;
-                    for (BaoLo baoLo : listBaoLosByDate) {
-                        addTrungBaoLosItem(baoLo,dais);
+                    if(vungMien == AppConstants.MIEN_NAM){
+                        for (BaoLo baoLo : listBaoLosByDate) {
+                            addTrungBaoLosItem(baoLo,dais);
+                        }
+                    }else{
+                        //handle trung thuong mien bac here
+                        XoSoUtils.loadKetQuaXoSoFromInternetMienBac(tvDate.getText().toString()).setListener(TongKetActivity.this);
                     }
+
                 });
 
     }
     public void addTrungBaoLosItem(BaoLo baoLo, List<Dai> dais) {
 
-        /*daiViewModel.getDaisByDate(tvDate.getText().toString()).observe(this, dais -> {
-
-            if (dais != null) {
-
-            }
-
-
-        });*/
         if (dais.size() == 2) {
             float soTienThuong = XoSoUtils.kqTrungBaoLos2Dai(dais.get(0).getGiaiThuong(), dais.get(1).getGiaiThuong(),
                     baoLo);
@@ -589,7 +738,7 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
         });*/
 
         if (dais.size() == 2) {
-            if (soDa.getSoCuocThu3() == AppConstants.KHONG_CUOC_3_CON) {
+            if (soDa.getSoCuocThu3().equals(AppConstants.KHONG_CUOC_3_CON)) {
                 handleTrung2ConSoDa(dais, soDa, soDa.getSoCuocThu1(), soDa.getSoCuocThu2());
             } else {
                 float soTienThuong = XoSoUtils.isTrung3Con(dais.get(0).getGiaiThuong(), dais.get(1).getGiaiThuong(), soDa);
@@ -604,12 +753,12 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    private void handleTrung2ConSoDa(List<Dai> dais, SoDa soDa, int soCuoc1, int soCuoc2) {
+    private void handleTrung2ConSoDa(List<Dai> dais, SoDa soDa, String soCuoc1, String soCuoc2) {
 
         String result = "";
         float soTienThuong = XoSoUtils.kqTrung2ConSoDa(dais.get(0).getGiaiThuong(), dais.get(1).getGiaiThuong(),
                 soDa, soCuoc1, soCuoc2);
-        int heSo = (int) (soTienThuong / AppConstants.TRUNG_THUONG_SO_DA);
+        int heSo = (int) (soTienThuong / (AppConstants.TRUNG_THUONG_SO_DA*soDa.getTienCuoc()));
         tongTrungThuongSoDa += soTienThuong;
         //Handle Trung 2 con
         if (soTienThuong > 0) {
@@ -625,11 +774,11 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    private void handleTrung3ConSoDa(List<Dai> dais, SoDa soDa, int soCuoc1, int soCuoc2, int soCuoc3) {
+    private void handleTrung3ConSoDa(List<Dai> dais, SoDa soDa, String soCuoc1, String soCuoc2, String soCuoc3) {
 
         String result = "";
         float soTienThuong = XoSoUtils.isTrung3Con(dais.get(0).getGiaiThuong(), dais.get(1).getGiaiThuong(), soDa);
-        int heSo = (int) (soTienThuong / AppConstants.TRUNG_THUONG_SO_DA_3_CON);
+        int heSo = (int) (soTienThuong / AppConstants.TRUNG_THUONG_SO_DA_3_CON*soDa.getTienCuoc());
 
 
         //Handle Trung 3 con
@@ -659,7 +808,7 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
                     }
             );*/
 
-            if (dais.get(0) != null) {
+            if (dais.size() > 0) {
                 String kqDau = XoSoUtils.kqTrungDau(dais.get(0).getGiaiThuong(), dauDuoi);
                 if (!kqDau.equals("")) {
                     addItemToLinearLayout(ln_data_dau_duoi, kqDau);
@@ -685,7 +834,7 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
                     }
             );*/
 
-            if (dais.get(1) != null) {
+            if (dais.size() > 1) {
                 String kqDau = XoSoUtils.kqTrungDau(dais.get(1).getGiaiThuong(), dauDuoi);
                 if (!kqDau.equals("")) {
                     addItemToLinearLayout(ln_data_dau_duoi, kqDau);
@@ -707,13 +856,9 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
 
     public float addAnUiItem(DauDuoi dauDuoi, List<Dai> dais) {
         // String anUiData = dauDuoi.getSoCuoc() + dauDuoi.
+        float tongAnUi = 0;
 
         if (dauDuoi.getDaiI1D() > 0) {
-           /* daiViewModel.getDaiByID(tvDate.getText().toString(), dauDuoi.getDaiI1D() + "").observe(
-                    this, dai -> {
-
-                    }
-            );*/
 
             if (dais.get(0) != null) {
                 String kqDau = XoSoUtils.isTrungAnUiDauMienNam(dais.get(0).getGiaiThuong(), dauDuoi);
@@ -721,7 +866,7 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
                     addItemToLinearLayout(ln_data_an_ui, kqDau);
                     int indexEqual = kqDau.indexOf('=');
                     String tong = kqDau.substring(indexEqual + 1);
-                    tongTrungThuongAnUi += Float.parseFloat(tong);
+                    tongAnUi += Float.parseFloat(tong);
                 }
 
                 String kqDuoi = XoSoUtils.isTrungAnUiDuoiMienNam(dais.get(0).getGiaiThuong(), dauDuoi);
@@ -729,27 +874,19 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
                     addItemToLinearLayout(ln_data_an_ui, kqDuoi);
                     int indexEqual = kqDuoi.indexOf('=');
                     String tong = kqDuoi.substring(indexEqual + 1);
-                    tongTrungThuongAnUi += Float.parseFloat(tong);
+                    tongAnUi += Float.parseFloat(tong);
                 }
             }
 
         }
         if (dauDuoi.getDaiI2D() > 0) {
-
-           /* daiViewModel.getDaiByID(tvDate.getText().toString(), dauDuoi.getDaiI2D() + "").observe(
-                    this, dai -> {
-
-
-                    }
-            );*/
-
-            if (dais.get(1) != null) {
+            if (dais.size() > 1) {
                 String kqDau = XoSoUtils.isTrungAnUiDauMienNam(dais.get(1).getGiaiThuong(), dauDuoi);
                 if (!kqDau.equals("")) {
                     addItemToLinearLayout(ln_data_an_ui, kqDau);
                     int indexEqual = kqDau.indexOf('=');
                     String tong = kqDau.substring(indexEqual + 1);
-                    tongTrungThuongAnUi += Float.parseFloat(tong);
+                    tongAnUi += Float.parseFloat(tong);
                 }
 
                 String kqDuoi = XoSoUtils.isTrungAnUiDuoiMienNam(dais.get(1).getGiaiThuong(), dauDuoi);
@@ -757,12 +894,12 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
                     addItemToLinearLayout(ln_data_an_ui, kqDuoi);
                     int indexEqual = kqDuoi.indexOf('=');
                     String tong = kqDuoi.substring(indexEqual + 1);
-                    tongTrungThuongAnUi += Float.parseFloat(tong);
+                    tongAnUi += Float.parseFloat(tong);
                 }
             }
         }
 
-        return tongTrungThuongAnUi;
+        return tongAnUi;
     }
 
     void addItemToLinearLayout(LinearLayout linearLayout, String text) {
@@ -791,11 +928,15 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
 
     void setUpTotalLoiLo(){
         float tongThuong;
-        tongThuong = tongTrungThuongAnUi + tongTrungDauDuoi + tongTrungThuongSoDa + tongTrungThuongBaoLo;
-        Log.d("TongAnUi", tongTrungThuongAnUi+"");
-        Log.d("TongDauDuoi", tongTrungDauDuoi+"");
-        Log.d("TongSoDa", tongTrungThuongSoDa+"");
-        Log.d("TongBaoLo", tongTrungThuongBaoLo+"");
+        if(vungMien == AppConstants.MIEN_NAM){
+            tongThuong = tongTrungThuongAnUi + tongTrungDauDuoi + tongTrungThuongSoDa + tongTrungThuongBaoLo;
+        }else{
+            tongThuong = tongTrungDauDuoiMienBac + tongTrungSoDaMienBac + tongTrungBaoLoMienBac;
+        }
+
+        Log.d("TongDauDuoi", tongTrungDauDuoiMienBac+"");
+        Log.d("TongSoDa", tongTrungSoDaMienBac+"");
+        Log.d("TongBaoLo", tongTrungBaoLoMienBac+"");
 
         tvLoiLoTrungThuong.setText(XoSoUtils.getInteger(tongThuong));
         Log.d("TongThu",tvTongThu.getText().toString());
@@ -811,5 +952,112 @@ public class TongKetActivity extends AppCompatActivity implements View.OnClickLi
         tvLoiLoKetQua.setText(XoSoUtils.getInteger(ketQua));
 
 
+    }
+
+     void resetUIList(){
+        tvTongDD.setText("0");
+        tvTongThuDD.setText("0");
+
+        tvTongDa.setText("0");
+        tvTongThuDa.setText("0");
+
+         tvTongLo.setText("0");
+         tvTongThuLo.setText("0");
+     }
+
+    @Override
+    public void ketQua(GiaiThuongMienBac giaiThuong) {
+
+        giaiThuongMienBacList.add(giaiThuong);
+        tongTrungDauDuoiMienBac = 0;
+        tongTrungSoDaMienBac = 0;
+        tongTrungBaoLoMienBac = 0;
+
+        if(giaiThuong != null){
+            ln_data_dau_duoi.removeAllViews();
+            tongTrungDauDuoiMienBac = 0;
+            for(DauDuoi dauDuoi: listDauDuoisByDate){
+               tongTrungDauDuoiMienBac += handleTrungDauDuoiMienBac(giaiThuong,dauDuoi);
+            }
+
+            if(listSodasByDate.size() > 0){
+                ln_data_da.removeAllViews();
+                tongTrungSoDaMienBac = 0;
+                for(SoDa soDa : listSodasByDate){
+                   tongTrungSoDaMienBac += handleTrungThuongSoDaMienBac(giaiThuong,soDa);
+                }
+            }
+            if(listBaoLosByDate.size() > 0){
+                ln_data_bao_lo.removeAllViews();
+                tongTrungBaoLoMienBac = 0;
+                for(BaoLo baoLo: listBaoLosByDate){
+                   tongTrungBaoLoMienBac += handleTrungBaoLoMienBac(giaiThuong, baoLo);
+                }
+            }
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    setUpTotalLoiLo();
+                }
+            },600);
+        }
+
+    }
+
+    private float handleTrungBaoLoMienBac(GiaiThuongMienBac giaiThuong, BaoLo baoLo) {
+
+        float tong = XoSoUtils.tongTrungThuongBaoLoMienBac(giaiThuong,baoLo)* Float.parseFloat(baoLo.getTienCuoc());
+        if(tong > 0){
+            String kq = baoLo.getSoCuoc() + "-" + baoLo.getTienCuoc() + " = " + XoSoUtils.getInteger(tong);
+            addItemToLinearLayout(ln_data_bao_lo,kq);
+        }
+
+
+        return tong;
+    }
+
+    private float handleTrungThuongSoDaMienBac(GiaiThuongMienBac giaiThuong, SoDa soDa) {
+
+        float tong = 0;
+        if(soDa.getSoCuocThu3().equals(AppConstants.KHONG_CUOC_3_CON)){
+          tong += handleTrungThuongSoDaMienBac2con(giaiThuong,soDa, soDa.getSoCuocThu1(), soDa.getSoCuocThu2());
+        }else{
+            tong += XoSoUtils.tongTrungThuongSoDaMienBac3Con(giaiThuong,soDa)*soDa.getTienCuoc();
+            if(tong > 0){
+                String kq = "(" + soDa.getSoCuocThu1() + "-" + soDa.getSoCuocThu2() +  "-" + soDa.getSoCuocThu3()+ ")" + "-" + XoSoUtils.getInteger(soDa.getTienCuoc())
+                        + " = " + XoSoUtils.getInteger(tong);
+                addItemToLinearLayout(ln_data_da,kq);
+            }else{
+               tong += handleTrungThuongSoDaMienBac2con(giaiThuong,soDa, soDa.getSoCuocThu1(), soDa.getSoCuocThu2());
+               tong += handleTrungThuongSoDaMienBac2con(giaiThuong,soDa, soDa.getSoCuocThu1(), soDa.getSoCuocThu3());
+               tong += handleTrungThuongSoDaMienBac2con(giaiThuong,soDa, soDa.getSoCuocThu2(), soDa.getSoCuocThu3());
+            }
+        }
+
+        return tong;
+    }
+
+    private float handleTrungThuongSoDaMienBac2con(GiaiThuongMienBac giaiThuongMienBac,SoDa soDa, String so1, String so2){
+        float tong = 0;
+        tong = XoSoUtils.tongTrungThuongSoDaMienBac2Con(giaiThuongMienBac,so1,so2)* soDa.getTienCuoc();
+        if(tong > 0){
+            String kq = "(" + so1 + "-" + so2 + ")" + "-" + XoSoUtils.getInteger(soDa.getTienCuoc())
+                    + " = " + XoSoUtils.getInteger(tong);
+            addItemToLinearLayout(ln_data_da,kq);
+        }
+
+        return tong;
+
+    }
+
+    private float handleTrungDauDuoiMienBac(GiaiThuongMienBac giaiThuong, DauDuoi dauDuoi) {
+        float total = XoSoUtils.tongTrungThuongDauDuoiMienBac(giaiThuong,dauDuoi);
+        if(total > 0){
+            String r = dauDuoi.getSoCuoc() + " - " + XoSoUtils.getInteger(dauDuoi.getTienCuocSoDau()) + " = " + XoSoUtils.getInteger(total);
+            addItemToLinearLayout(ln_data_dau_duoi,r);
+        }
+
+        return total;
     }
 }

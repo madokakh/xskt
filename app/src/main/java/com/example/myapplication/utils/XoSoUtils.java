@@ -6,9 +6,11 @@ import android.widget.DatePicker;
 
 import com.example.myapplication.AppConstants;
 import com.example.myapplication.CurrentDate;
+import com.example.myapplication.GiaiThuongMienBac;
 import com.example.myapplication.LotteryCity;
 import com.example.myapplication.LotterySchedule;
 import com.example.myapplication.PareseURLWebScrapping;
+import com.example.myapplication.PareseURLWebScrappingMienBac;
 import com.example.myapplication.model.BaoLo;
 import com.example.myapplication.model.DauDuoi;
 import com.example.myapplication.model.GiaiThuong;
@@ -67,21 +69,17 @@ public class XoSoUtils {
         return dem;
     }
 
-    public static float kqTrung2ConSoDa(GiaiThuong giaiThuong1, GiaiThuong giaiThuong2, SoDa soDa, int soCuoc1, int soCuoc2) {
+    public static float kqTrung2ConSoDa(GiaiThuong giaiThuong1, GiaiThuong giaiThuong2, SoDa soDa, String soCuoc1, String soCuoc2) {
 
-        int soLanXuanHienSo1 = isContainNumber(giaiThuong1, giaiThuong2, soCuoc1 + "");
-        int soLanXuanHienSo2 = isContainNumber(giaiThuong1, giaiThuong2, soCuoc2 + "");
+        int soLanXuanHienSo1 = isContainNumber(giaiThuong1, giaiThuong2, soCuoc1);
+        int soLanXuanHienSo2 = isContainNumber(giaiThuong1, giaiThuong2, soCuoc2);
 
-        int heSoTrung = 0;
+        int heSoTrung = soLanXuanHienSo1;
         boolean isTrung;
-        if (soLanXuanHienSo1 >= 1 && soLanXuanHienSo2 >= 1) {
-            isTrung = true;
-            if (soLanXuanHienSo1 >= soLanXuanHienSo2) {
-                heSoTrung = soLanXuanHienSo2;
-            } else {
-                heSoTrung = soLanXuanHienSo1;
-            }
+        if(soLanXuanHienSo2 < heSoTrung){
+            heSoTrung = soLanXuanHienSo2;
         }
+
 
         float tienThuong = AppConstants.TRUNG_THUONG_SO_DA * soDa.getTienCuoc() * heSoTrung;
 
@@ -482,6 +480,15 @@ public class XoSoUtils {
         return formattedNumber;
     }
 
+    public static float tongDauDuoiMienBac(List<DauDuoi> dauDuoiList){
+
+        float tong = 0;
+        for(DauDuoi dauDuoi: dauDuoiList){
+            tong += dauDuoi.getTienCuocSoDau()* AppConstants.HE_SO_DAU_DUOI_MIEN_BAC ;
+        }
+
+        return tong;
+    }
     public static float tongDauDuoiBanDuoc(List<DauDuoi> dauDuoiList) {
 
         //  DauDuoi dauDuoi = new DauDuoi();
@@ -502,11 +509,19 @@ public class XoSoUtils {
         return tongKetQuaDauDuoi;
     }
 
+    public static float tongSoDaMienBac(List<SoDa> soDaList){
+
+        float tong  = 0;
+        for(SoDa soDa : soDaList){
+            tong += soDa.getTienCuoc();
+        }
+        return tong;
+    }
     public static float tongSoDasMienNam(List<SoDa> soDaList) {
 
         float tong = 0;
         for (SoDa soDa : soDaList) {
-            if (soDa.getSoCuocThu3() != AppConstants.KHONG_CUOC_3_CON) {
+            if (Integer.parseInt(soDa.getSoCuocThu3()) != AppConstants.KHONG_CUOC_3_CON) {
                 tong += soDa.getTienCuoc() * 3;
             } else {
 
@@ -527,6 +542,22 @@ public class XoSoUtils {
         return tong * 2;
     }
 
+    public static float tongBaoLoMienBac(List<BaoLo> baoLoList) {
+
+        float tong = 0;
+
+        for (BaoLo baoLo : baoLoList) {
+            if(baoLo.getSoCuoc().length() == 2){
+                tong += Float.parseFloat(baoLo.getTienCuoc())*AppConstants.HE_SO_BAO_LO_2CON_MIEN_BAC;
+            }else if(baoLo.getSoCuoc().length() == 3){
+                tong += Float.parseFloat(baoLo.getTienCuoc())*AppConstants.HE_SO_BAO_LO_3CON_MIEN_BAC;
+            }else if(baoLo.getSoCuoc().length() == 4){
+                tong += Float.parseFloat(baoLo.getTienCuoc())*AppConstants.HE_SO_BAO_LO_4CON_MIEN_BAC;
+            }
+
+        }
+        return tong;
+    }
     public static String getCurrentDate() {
 
         Calendar c = Calendar.getInstance();
@@ -589,6 +620,135 @@ public class XoSoUtils {
         return (PareseURLWebScrapping) new PareseURLWebScrapping().execute(new String[]{url});
     }
 
+    public static PareseURLWebScrappingMienBac loadKetQuaXoSoFromInternetMienBac(String date) {
+
+        String url = "";
+
+        String dates[] = date.split("/");
+
+        int day = Integer.parseInt(dates[0]);
+        int month = Integer.parseInt(dates[1]);
+        CurrentDate currentDate = new CurrentDate();
+        String dateFormat = String.format("%02d",day) + "-"+ String.format("%02d",month)+"-"+ currentDate.getNam();
+
+        url += AppConstants.URL_BASE_MIEN_BAC+ dateFormat + ".html";
+
+
+        return (PareseURLWebScrappingMienBac) new PareseURLWebScrappingMienBac().execute(new String[]{url,date});
+    }
+
+
+    public static float tongTrungThuongDauDuoiMienBac(GiaiThuongMienBac giaiThuongMienBac, DauDuoi dauDuoi){
+
+        String kq;
+        int soLanTrung = 0;
+        for(String gt : giaiThuongMienBac.getDauDuois()){
+            kq = gt.substring(gt.length() - 2);
+            if(kq.equals(dauDuoi.getSoCuoc())){
+                soLanTrung++;
+            }
+        }
+
+        float totalPrize = soLanTrung * AppConstants.TRUNG_THUONG_DAU_DUOI_MIEN_BAC*dauDuoi.getTienCuocSoDau();
+
+        return totalPrize;
+    }
+
+    public static float tongTrungThuongBaoLoMienBac(GiaiThuongMienBac giaiThuongMienBac,BaoLo baoLo){
+
+
+        float totalPrize = 0;
+        List<String> giaiThuongs = new ArrayList<>();
+        giaiThuongs.addAll(giaiThuongMienBac.getDauDuois());
+        giaiThuongs.addAll(giaiThuongMienBac.getGiaiKhac());
+
+        int timesAppear = isContainBaoLo(giaiThuongs,baoLo.getSoCuoc());
+
+        if(baoLo.getSoCuoc().length() == 2){
+            totalPrize = timesAppear * AppConstants.TRUNG_THUONG_BAO_LO_2CON_MIEN_BAC;
+        }else if(baoLo.getSoCuoc().length() == 3 || baoLo.getSoCuoc().length() == 4){
+            totalPrize = timesAppear * AppConstants.TRUNG_THUONG_BAO_LO_3CON_MIEN_BAC;
+        }
+
+        return totalPrize;
+    }
+
+    private static int isContainBaoLo(List<String> listGiaiThuong, String soCuoc){
+        int dem = 0;
+        for(String gt : listGiaiThuong){
+
+           if(gt.length() >= soCuoc.length()){
+               if(gt.substring(gt.length() - soCuoc.length()).equals(soCuoc)){
+                   dem++;
+               }
+           }
+        }
+
+
+        return dem;
+    }
+    public static float tongTrungThuongSoDaMienBac3Con(GiaiThuongMienBac giaiThuong, SoDa soDa){
+
+        float kq = 0;
+
+        List<String> giaiThuongs = new ArrayList<>();
+        giaiThuongs.addAll(giaiThuong.getDauDuois());
+        giaiThuongs.addAll(giaiThuong.getGiaiKhac());
+        int soLanTrung1 = isContainSoDa(giaiThuongs,soDa.getSoCuocThu1()+ "");
+        int soLanTrung2 = isContainSoDa(giaiThuongs,soDa.getSoCuocThu2()+ "");
+        int soLanTrung3 = isContainSoDa(giaiThuongs,soDa.getSoCuocThu3()+ "");
+
+        int min = soLanTrung1;
+
+        if(soLanTrung2 < min){
+            min = soLanTrung2;
+        }
+        if(soLanTrung3 < min){
+            min = soLanTrung3;
+        }
+
+
+        kq = min * AppConstants.TRUNG_THUONG_SO_DA_3_CON_MIEN_BAC;
+
+        return kq;
+
+    }
+    public static float tongTrungThuongSoDaMienBac2Con(GiaiThuongMienBac giaiThuongMienBac, String so1, String so2){
+
+
+        float kq = 0;
+        List<String> giaiThuongs = new ArrayList<>();
+        giaiThuongs.addAll(giaiThuongMienBac.getDauDuois());
+        giaiThuongs.addAll(giaiThuongMienBac.getGiaiKhac());
+
+        int heSoThu1 = isContainSoDa(giaiThuongs,so1+"");
+        int hesoThu2 = isContainSoDa(giaiThuongs, so2+"");
+
+        int min = heSoThu1;
+        if(hesoThu2 < min){
+            min = hesoThu2;
+        }
+
+        kq = min * AppConstants.TRUNG_THUONG_SO_DA_2CON_MIEN_BAC;
+
+
+        return kq;
+    }
+
+    private static int isContainSoDa(List<String> listGiaiThuong, String soCuoc){
+
+        int dem = 0;
+        String s;
+        for(String gt : listGiaiThuong){
+
+            if(soCuoc.equals(gt.substring(gt.length()-2))){
+                dem++;
+            }
+        }
+
+        return dem;
+    }
+
     public static LotteryCity getLotteryCityByDate(int dayOfMonth, int monthOfYear, int year) {
 
         LotteryCity city;
@@ -600,5 +760,6 @@ public class XoSoUtils {
         city = XoSoUtils.getDais(daysOfWeek);
         return city;
     }
+
 
 }

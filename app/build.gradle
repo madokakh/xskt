@@ -39,6 +39,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.4.0'
     // jsoup HTML parser library @ https://jsoup.org/
     implementation 'org.jsoup:jsoup:1.15.4'
+    implementation 'com.google.android.material:material:1.4.0'
+
 
     implementation "androidx.cardview:cardview:1.0.0"
     implementation 'androidx.appcompat:appcompat:1.6.1'

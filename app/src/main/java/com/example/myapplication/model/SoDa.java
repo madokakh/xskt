@@ -10,9 +10,9 @@ public class SoDa {
     private int soDaID;
     private String nguoiBanID;
 
-    private int soCuocThu1;
-    private int soCuocThu2;
-    private int soCuocThu3;
+    private String soCuocThu1;
+    private String soCuocThu2;
+    private String soCuocThu3;
 
     private int dai1;
     private int dai2;
@@ -28,7 +28,7 @@ public class SoDa {
 
     private int vungMien;
 
-    public SoDa(int soDaID, String nguoiBanID, int soCuocThu1, int soCuocThu2, int soCuocThu3, int dai1, int dai2, int dai3, int dai4, String date) {
+    public SoDa(int soDaID, String nguoiBanID, String soCuocThu1, String soCuocThu2, String soCuocThu3, int dai1, int dai2, int dai3, int dai4, String date) {
         this.soDaID = soDaID;
         this.nguoiBanID = nguoiBanID;
         this.soCuocThu1 = soCuocThu1;
@@ -62,27 +62,27 @@ public class SoDa {
         this.nguoiBanID = nguoiBanID;
     }
 
-    public int getSoCuocThu1() {
+    public String getSoCuocThu1() {
         return soCuocThu1;
     }
 
-    public void setSoCuocThu1(int soCuocThu1) {
+    public void setSoCuocThu1(String soCuocThu1) {
         this.soCuocThu1 = soCuocThu1;
     }
 
-    public int getSoCuocThu2() {
+    public String getSoCuocThu2() {
         return soCuocThu2;
     }
 
-    public void setSoCuocThu2(int soCuocThu2) {
+    public void setSoCuocThu2(String soCuocThu2) {
         this.soCuocThu2 = soCuocThu2;
     }
 
-    public int getSoCuocThu3() {
+    public String getSoCuocThu3() {
         return soCuocThu3;
     }
 
-    public void setSoCuocThu3(int soCuocThu3) {
+    public void setSoCuocThu3(String soCuocThu3) {
         this.soCuocThu3 = soCuocThu3;
     }
 

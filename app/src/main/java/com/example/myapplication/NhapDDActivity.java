@@ -111,6 +111,16 @@ public class NhapDDActivity extends AppCompatActivity implements View.OnClickLis
         sDate = intent.getStringExtra(EXTRA_DATE);
         vungMien = intent.getIntExtra(EXTRA_VUNG_MIEN,0);
 
+        String toolBarTitle = "";
+
+        if(vungMien == AppConstants.MIEN_NAM){
+            toolBarTitle += "Miền Nam";
+        }else{
+            toolBarTitle += "Miền Bắc";
+        }
+        toolBarTitle += "- Số Đá";
+        getSupportActionBar().setTitle(toolBarTitle);
+
 
         dauDuoiList = new ArrayList<>();
         dauDuoiList2 = new ArrayList<>();
@@ -195,7 +205,19 @@ public class NhapDDActivity extends AppCompatActivity implements View.OnClickLis
         int day = c.get(Calendar.DAY_OF_MONTH);
 
 
-        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+        int dayOfWeek;
+
+        tvDate.setText(sDate);
+
+
+        String sday = sDate.split("/")[0];
+        String sMonth = sDate.split("/")[1];
+
+        String formattedDay = String.format("%02d", Integer.parseInt(sday));
+        String formattedMonth = String.format("%02d", Integer.parseInt(sMonth));
+        String selectedDate = formattedDay + "/" + formattedMonth + "/" + year;
+
+        dayOfWeek = XoSoUtils.getDateOfWeek(selectedDate);
         String tenDai1 = XoSoUtils.getTenDaiByDate(dayOfWeek,1);
         String tenDai2 = XoSoUtils.getTenDaiByDate(dayOfWeek,2);
 
@@ -203,23 +225,15 @@ public class NhapDDActivity extends AppCompatActivity implements View.OnClickLis
         tvTenDai1.setText(tenDai1);
         tvTenDai2.setText(tenDai2);
 
-        String formattedDay = String.format("%02d", day);
-        // String formattedMonth = String.format("%02d", );
-        String selectedDate = formattedDay + "/" + (month + 1);
-        if(!sDate.equals("")){
-            tvDate.setText(sDate);
-        }else{
-            tvDate.setText(selectedDate);
-        }
-
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Get the current date
-                final Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH);
-                int day = c.get(Calendar.DAY_OF_MONTH);
+                String dates[] = tvDate.getText().toString().split("/");
+                int day = Integer.parseInt(dates[0]);
+                int month = Integer.parseInt(dates[1]);
+                CurrentDate currentDate = new CurrentDate();
+                int year = currentDate.getNam();
                 //dauDuoiList.clear();
 
                 firstTime++;
@@ -264,12 +278,12 @@ public class NhapDDActivity extends AppCompatActivity implements View.OnClickLis
                         };
 
 
-                        dauDuoiViewModel.getAllDauDuoiWithNguoiBanIDAndDate(nguoiBan.getNguoiBanID(),
-                                selectedDate).observe(NhapDDActivity.this,observer2);
+                        dauDuoiViewModel.getAllDauDuoiWithNguoiBanIDAndDateVungMien(nguoiBan.getNguoiBanID(),
+                                selectedDate,AppConstants.MIEN_NAM).observe(NhapDDActivity.this,observer2);
 
 
                     }
-                }, year, month, day);
+                }, year, month - 1, day);
                 XoSoUtils.limited7DaysSelectedDatePicker(datePickerDialog);
                 datePickerDialog.show();
 
@@ -311,8 +325,8 @@ public class NhapDDActivity extends AppCompatActivity implements View.OnClickLis
             }
         };
 
-        dauDuoiViewModel.getAllDauDuoiWithNguoiBanIDAndDate(nguoiBan.getNguoiBanID(),
-                tvDate.getText().toString()).observe(this,observer1);
+        dauDuoiViewModel.getAllDauDuoiWithNguoiBanIDAndDateVungMien(nguoiBan.getNguoiBanID(),
+                tvDate.getText().toString(),AppConstants.MIEN_NAM).observe(this,observer1);
 
 
         /* dauDuoiViewModel.getAllDauDuoiWithNguoiBanID(nguoiBan.getNguoiBanID()).observe(this,dauDuois -> {
@@ -336,11 +350,12 @@ public class NhapDDActivity extends AppCompatActivity implements View.OnClickLis
                 int position = viewHolder.getAdapterPosition();
 
                 // Remove the item from the list
-                dauDuoiViewModel.delete(dauDuoiList.get(position));
+                DauDuoi dauDuoi = dauDuoiList.get(position);
                 dauDuoiList.remove(position);
-
                 // Notify the adapter that the item was removed
                 adapter.notifyItemRemoved(position);
+                dauDuoiViewModel.delete(dauDuoi);
+
             }
         }).attachToRecyclerView(rvDauDuoi);
 
@@ -546,8 +561,6 @@ public class NhapDDActivity extends AppCompatActivity implements View.OnClickLis
         etTienSoDau.setBackground(getDrawable(R.drawable.edittext_border));
         etSoCuoc.setBackground(getDrawable(R.drawable.etborder_unselected));
         etTienSoDuoi.setBackground(getDrawable(R.drawable.etborder_unselected));
-        cbDai1.setChecked(true);
-        cbDai2.setChecked(true);
         cbSoDau.setChecked(true);
         cbSoDuoi.setChecked(true);
     }
@@ -648,7 +661,8 @@ public class NhapDDActivity extends AppCompatActivity implements View.OnClickLis
                 Toast.makeText(this, "delete", Toast.LENGTH_SHORT).show();
                 dauDuoiViewModel.delete(dauDuoi);
                 dauDuoiList.remove(dauDuoi);
-                adapter.notifyDataSetChanged();
+                adapter.notifyItemRemoved(position);
+              //  adapter.notifyDataSetChanged();
                 return true;
             }
             return false;

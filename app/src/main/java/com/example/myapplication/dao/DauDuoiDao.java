@@ -34,4 +34,9 @@ public interface DauDuoiDao {
     @Query("SELECT * FROM dauduoi WHERE nguoiBanID= :nguoiBanID AND dateString= :date")
     LiveData<List<DauDuoi>> getAllDauDuoisWithNguoiBanAndDate(String nguoiBanID, String date);
 
+    @Query("SELECT * FROM dauduoi WHERE nguoiBanID= :nguoiBanID AND dateString= :date AND vungMien= :vungMien")
+    LiveData<List<DauDuoi>> getAllDauDuoisWithNguoiBanAndDateVungMien(String nguoiBanID, String date,int vungMien);
+    @Query("DELETE FROM DauDuoi WHERE dateString= :sixDaysAgo")
+    void deleteDauDuoiOlderThan(String sixDaysAgo);
+
 }

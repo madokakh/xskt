@@ -578,7 +578,7 @@ public class TongKetNguoiBanAcitvity extends AppCompatActivity implements View.O
 
     public void addTrungSoDa2Item(SoDa soDa) {
 
-        daiViewModel.getDaisByDate(tvDate.getText().toString()).observe(this, dais -> {
+       /* daiViewModel.getDaisByDate(tvDate.getText().toString()).observe(this, dais -> {
             if (dais != null) {
                 if (dais.size() == 2) {
                     if (soDa.getSoCuocThu3() == AppConstants.KHONG_CUOC_3_CON) {
@@ -597,7 +597,7 @@ public class TongKetNguoiBanAcitvity extends AppCompatActivity implements View.O
             }
 
 
-        });
+        });*/
     }
 
     public void addTrungBaoLosItem(BaoLo baoLo) {
@@ -627,7 +627,7 @@ public class TongKetNguoiBanAcitvity extends AppCompatActivity implements View.O
 
     private void handleTrung2ConSoDa(List<Dai> dais, SoDa soDa, int soCuoc1, int soCuoc2) {
 
-        String result = "";
+      /*  String result = "";
         float soTienThuong = XoSoUtils.kqTrung2ConSoDa(dais.get(0).getGiaiThuong(), dais.get(1).getGiaiThuong(),
                 soDa, soCuoc1, soCuoc2);
         int heSo = (int) (soTienThuong / AppConstants.TRUNG_THUONG_SO_DA);
@@ -643,7 +643,7 @@ public class TongKetNguoiBanAcitvity extends AppCompatActivity implements View.O
                         + "- " + XoSoUtils.getInteger(soDa.getTienCuoc()) + " = " + XoSoUtils.getInteger(soTienThuong) + "";
             }
             addItemToLinearLayout(lnDataTrungSoDas, result);
-        }
+        }*/
     }
 
     private void handleTrung3ConSoDa(List<Dai> dais, SoDa soDa, int soCuoc1, int soCuoc2, int soCuoc3) {

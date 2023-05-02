@@ -58,8 +58,19 @@ public class DauDuoiViewModel extends AndroidViewModel {
 
         return repository.getAllDauDuoiWithNguoiBanIDAndDate(nguoiBanID,date);
     }
+    public LiveData<List<DauDuoi>> getAllDauDuoiWithNguoiBanIDAndDateVungMien(String nguoiBanID, String date, int vungMien) {
+
+
+        return repository.getAllDauDuoiWithNguoiBanIDAndDateVungMien(nguoiBanID,date,vungMien);
+    }
 
     public LiveData<List<DauDuoi>> getAllDauDuoisWithNguoiBan(String nguoiBanID) {
         return repository.getAllDauDuoisWithNguoiBan(nguoiBanID);
+    }
+
+
+    public void deleteAllDauDuoiSixDaysAgo(String date){
+
+        repository.deleteAllDauDuoiSixDaysAgon(date);
     }
 }

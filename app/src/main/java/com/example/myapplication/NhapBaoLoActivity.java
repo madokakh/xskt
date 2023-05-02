@@ -6,6 +6,7 @@ import static com.example.myapplication.NhapDDActivity.EXTRA_VUNG_MIEN;
 import static com.example.myapplication.TongKetNguoiBanAcitvity.EXTRA_DATE;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -81,6 +82,16 @@ public class NhapBaoLoActivity extends AppCompatActivity implements View.OnClick
         isFullScreen = intent.getBooleanExtra(EXTRA_FULL_SCREEN,isFullScreen);
         sDate = intent.getStringExtra(EXTRA_DATE);
         vungMien = intent.getIntExtra(EXTRA_VUNG_MIEN,0);
+
+        String toolBarTitle = "";
+
+        if(vungMien == AppConstants.MIEN_NAM){
+            toolBarTitle += "Miền Nam";
+        }else{
+            toolBarTitle += "Miền Bắc";
+        }
+        toolBarTitle += "- Bao Lô";
+        getSupportActionBar().setTitle(toolBarTitle);
         connectView();
 
         connectData();
@@ -170,7 +181,7 @@ public class NhapBaoLoActivity extends AppCompatActivity implements View.OnClick
        // tvDate.setText(selectedDate);
         tvDate.setText(sDate);
 
-        baoLoViewModel.getAllBaoLoWithNguoiBanIDAndDate(nguoiBan.getNguoiBanID(),tvDate.getText().toString()).observe(this, baoLos -> {
+        baoLoViewModel.getAllBaoLoWithNguoiBanIDAndDateVungMien(nguoiBan.getNguoiBanID(),tvDate.getText().toString(),vungMien).observe(this, baoLos -> {
 
             // soDaAdapter.submitList(soDas);
             // Log.d("SODA_LIST",soDas.size()+"");
@@ -197,10 +208,11 @@ public class NhapBaoLoActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onClick(View v) {
                 // Get the current date
-                final Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH);
-                int day = c.get(Calendar.DAY_OF_MONTH);
+                String dates[] = tvDate.getText().toString().split("/");
+                int day = Integer.parseInt(dates[0]);
+                int month = Integer.parseInt(dates[1]);
+                CurrentDate currentDate = new CurrentDate();
+                int year = currentDate.getNam();
                 isDateisClicked = true;
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(NhapBaoLoActivity.this, new DatePickerDialog.OnDateSetListener() {
@@ -215,7 +227,7 @@ public class NhapBaoLoActivity extends AppCompatActivity implements View.OnClick
                         String date = formattedDay + "/" + formattedMonth + "/" + year;
                         Log.d("Date",selectedDate + "   "+ nguoiBan.getNguoiBanID());
                         baoLoList.clear();
-                        baoLoViewModel.getAllBaoLoWithNguoiBanIDAndDate(nguoiBan.getNguoiBanID(),selectedDate).observe(NhapBaoLoActivity.this, baoLos -> {
+                        baoLoViewModel.getAllBaoLoWithNguoiBanIDAndDateVungMien(nguoiBan.getNguoiBanID(),selectedDate,vungMien).observe(NhapBaoLoActivity.this, baoLos -> {
 
                             //  soDaAdapter.submitList(soDas);
 

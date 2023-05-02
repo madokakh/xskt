@@ -34,6 +34,12 @@ public interface SoDaDao {
     @Query("SELECT * FROM soda WHERE nguoiBanID= :nguoiBanID AND date= :date")
     LiveData<List<SoDa>> getAllSoDasWithNguoiBanAndDate(String nguoiBanID, String date);
 
+    @Query("SELECT * FROM soda WHERE nguoiBanID= :nguoiBanID AND date= :date AND vungMien= :vungMien")
+    LiveData<List<SoDa>> getAllSoDasWithNguoiBanAndDateVungMien(String nguoiBanID, String date, int vungMien);
+
+    @Query("DELETE FROM SoDa WHERE date= :sixDaysAgo")
+    void deleteSoDaOlderThan(String sixDaysAgo);
+
     @Query("SELECT * FROM soda WHERE nguoiBanID= :nguoiBanID")
     LiveData<List<SoDa>> getAllSoDasWithNguoiBan(String nguoiBanID);
 }

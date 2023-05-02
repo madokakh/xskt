@@ -84,6 +84,15 @@ public class NhapSoDaActitivy extends AppCompatActivity implements View.OnClickL
         isFullScreen = intent.getBooleanExtra(EXTRA_FULL_SCREEN,isFullScreen);
         sDate = intent.getStringExtra(EXTRA_DATE);
         vungMien = intent.getIntExtra(EXTRA_VUNG_MIEN,0);
+        String toolBarTitle = "";
+
+        if(vungMien == AppConstants.MIEN_NAM){
+            toolBarTitle += "Miền Nam";
+        }else{
+            toolBarTitle += "Miền Bắc";
+        }
+        toolBarTitle += "- Số Đá";
+        getSupportActionBar().setTitle(toolBarTitle);
         connectView();
 
         connectData();
@@ -108,7 +117,8 @@ public class NhapSoDaActitivy extends AppCompatActivity implements View.OnClickL
       //  tvDate.setText(selectedDate);
         tvDate.setText(sDate);
 
-        soDaViewModel.getAllSoDaWithNguoiBanIDAndDate(nguoiBan.getNguoiBanID(),tvDate.getText().toString()).observe(this, soDas -> {
+        soDaViewModel.getAllSoDaWithNguoiBanIDAndDateVungMien(nguoiBan.getNguoiBanID(),tvDate.getText().toString(),
+                vungMien).observe(this, soDas -> {
 
            // soDaAdapter.submitList(soDas);
            // Log.d("SODA_LIST",soDas.size()+"");
@@ -139,10 +149,11 @@ public class NhapSoDaActitivy extends AppCompatActivity implements View.OnClickL
             @Override
             public void onClick(View v) {
                 // Get the current date
-                final Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH);
-                int day = c.get(Calendar.DAY_OF_MONTH);
+                String dates[] = tvDate.getText().toString().split("/");
+                int day = Integer.parseInt(dates[0]);
+                int month = Integer.parseInt(dates[1]);
+                CurrentDate currentDate = new CurrentDate();
+                int year = currentDate.getNam();
                 isDateisClicked = true;
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(NhapSoDaActitivy.this, new DatePickerDialog.OnDateSetListener() {
@@ -157,7 +168,7 @@ public class NhapSoDaActitivy extends AppCompatActivity implements View.OnClickL
                         String date = formattedDay + "/" + formattedMonth + "/" + year;
                         Log.d("Date",selectedDate + "   "+ nguoiBan.getNguoiBanID());
                         soDaList.clear();
-                        soDaViewModel.getAllSoDaWithNguoiBanIDAndDate(nguoiBan.getNguoiBanID(),selectedDate).observe(NhapSoDaActitivy.this, soDas -> {
+                        soDaViewModel.getAllSoDaWithNguoiBanIDAndDateVungMien(nguoiBan.getNguoiBanID(),selectedDate,vungMien).observe(NhapSoDaActitivy.this, soDas -> {
 
                          //  soDaAdapter.submitList(soDas);
 
@@ -177,7 +188,7 @@ public class NhapSoDaActitivy extends AppCompatActivity implements View.OnClickL
                         });
 
                     }
-                }, year, month, day);
+                }, year, month - 1, day);
                 datePickerDialog.show();
 
 
@@ -393,13 +404,13 @@ public class NhapSoDaActitivy extends AppCompatActivity implements View.OnClickL
         SoDa soDa = new SoDa();
 
         soDa.setVungMien(vungMien);
-        soDa.setSoCuocThu1(Integer.parseInt(etSo1.getText().toString()));
-        soDa.setSoCuocThu2(Integer.parseInt(etSo2.getText().toString()));
+        soDa.setSoCuocThu1(etSo1.getText().toString());
+        soDa.setSoCuocThu2(etSo2.getText().toString());
 
         if(!etSo3.getText().toString().equals("")){
-            soDa.setSoCuocThu3(Integer.parseInt(etSo3.getText().toString()));
+            soDa.setSoCuocThu3(etSo3.getText().toString());
         }else{
-            soDa.setSoCuocThu3(AppConstants.KHONG_CUOC_3_CON);
+            soDa.setSoCuocThu3(AppConstants.KHONG_CUOC_3_CON+"");
         }
 
         soDa.setDate(tvDate.getText().toString());

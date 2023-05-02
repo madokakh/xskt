@@ -162,7 +162,11 @@ public class XoSoRepository {
             soDaDao.deleteAllSoDa();
         });
     }
-
+    void deleteAllDaSixDaysAgon(String date){
+        XoSoDataBase.databaseWriteExecutor.execute(() -> {
+            soDaDao.deleteSoDaOlderThan(date);
+        });
+    }
     void insertBaoLo(BaoLo baoLo){
         XoSoDataBase.databaseWriteExecutor.execute(() -> {
             baoLoDao.insert(baoLo);
@@ -184,11 +188,21 @@ public class XoSoRepository {
             baoLoDao.deleteAllBaoLo();
         });
     }
+
+    void deleteAllBaoLoSixDaysAgo(String date){
+        XoSoDataBase.databaseWriteExecutor.execute(() -> {
+            baoLoDao.deleteBaoLoOlderThan(date);
+        });
+    }
+
     public LiveData<List<BaoLo>> getAllBaoLoWithNguoiBanIDAndDate(String nguoiBanID, String date) {
 
         return baoLoDao.getAllBaoLoWithNguoiBanAndDate(nguoiBanID,date);
     }
+    public LiveData<List<BaoLo>> getAllBaoLoWithNguoiBanIDAndDateVungMien(String nguoiBanID, String date, int vungMien) {
 
+        return baoLoDao.getAllBaoLoWithNguoiBanAndDateVungMien(nguoiBanID,date, vungMien);
+    }
 
     void insertNguoiBan(NguoiBan nguoiBan){
         XoSoDataBase.databaseWriteExecutor.execute(() -> {
@@ -234,6 +248,12 @@ public class XoSoRepository {
         });
     }
 
+    void deleteAllDauDuoiSixDaysAgon(String date){
+        XoSoDataBase.databaseWriteExecutor.execute(() -> {
+            dauDuoiDao.deleteDauDuoiOlderThan(date);
+        });
+    }
+
     public LiveData<List<DauDuoi>> getAllDauDuoiWithNguoiBanID(String nguoiBanID) {
 
         return dauDuoiDao.getAllDauDuoisWithNguoiBan(nguoiBanID);
@@ -244,8 +264,18 @@ public class XoSoRepository {
         return dauDuoiDao.getAllDauDuoisWithNguoiBanAndDate(nguoiBanID,date);
     }
 
+    public LiveData<List<DauDuoi>> getAllDauDuoiWithNguoiBanIDAndDateVungMien(String nguoiBanID, String date, int vungMien) {
+
+        return dauDuoiDao.getAllDauDuoisWithNguoiBanAndDateVungMien(nguoiBanID,date,vungMien);
+    }
+
     public LiveData<List<SoDa>> getAllSoDaWithNguoiBanIDAndDate(String nguoiBanID, String date) {
 
         return soDaDao.getAllSoDasWithNguoiBanAndDate(nguoiBanID,date);
+    }
+
+    public LiveData<List<SoDa>> getAllSoDaWithNguoiBanIDAndDateVungMien(String nguoiBanID, String date,int vungMien) {
+
+        return soDaDao.getAllSoDasWithNguoiBanAndDateVungMien(nguoiBanID,date, vungMien);
     }
 }

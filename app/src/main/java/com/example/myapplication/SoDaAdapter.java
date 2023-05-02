@@ -90,9 +90,9 @@ public class SoDaAdapter extends ListAdapter<SoDa, SoDaAdapter.SoDaViewHolder> {
 
         public void bind(SoDa soDa) {
 
-            String so1 = String.format("%02d",soDa.getSoCuocThu1());
-            String so2 = String.format("%02d",soDa.getSoCuocThu2());
-            String so3 = String.format("%02d",soDa.getSoCuocThu3());
+            String so1 =soDa.getSoCuocThu1();
+            String so2 = soDa.getSoCuocThu2();
+            String so3 = soDa.getSoCuocThu3();
 
             String tienCuoc = XoSoUtils.getInteger(soDa.getTienCuoc());
 
